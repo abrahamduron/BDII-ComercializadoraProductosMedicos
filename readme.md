@@ -1,10 +1,6 @@
 # Proyecto de Clase - Base de Datos 2
 ## Sistema para Comercializadora de Productos Médicos
 
-![PHP](https://img.shields.io/badge/PHP-8.0+-blue.svg)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
-![XAMPP](https://img.shields.io/badge/XAMPP-3.3.0-green.svg)
-
 ## Descripción del Proyecto
 
 Sistema de información desarrollado para una empresa dedicada a la compra, elaboración y venta de productos farmacéuticos y similares. El sistema maneja procesos de compras, ventas, inventario y gestión de proveedores.
@@ -41,11 +37,11 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 
 ## Tecnologías Utilizadas
 
-- **XAMPP** - Entorno de desarrollo local
-- **Apache** - Servidor web
-- **PHP** - Lenguaje de programación backend
-- **MySQL** - Base de datos
-- **phpMyAdmin** - Gestor de base de datos
+- **PORDEFINIR** - Entorno de desarrollo local
+- **PORDEFINIR** - Servidor web
+- **PORDEFINIR** - Lenguaje de programación backend
+- **SQLSERVER** - Base de datos
+- **SQL Server Management Studio** - Gestor de base de datos
 
 ## Equipo de Desarrollo
 
