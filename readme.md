@@ -49,6 +49,11 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 
 ## Equipo de Desarrollo
 
+| Docente | Asignatura |
+|--------|--------|
+| Guillermo Enrique Borjas Rodriguez  | IS601 Base de datos 2 |
+
+
 | Nombre | No. Cuenta |
 |--------|--------|
 | Ana Gabriela Zapata | 20161003654 |
@@ -56,9 +61,5 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 | Miguel Hernandez | 20181033312 |
 | Abraham Durón | 20131001422 |
 | Hermes Aguilera | |
-
-| Docente | Asignatura |
-|--------|--------|
-| Guillermo Enrique Borjas Rodriguez  | IS601 Base de datos 2 |
 
 ## Estructura del Proyecto
