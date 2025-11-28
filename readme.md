@@ -37,9 +37,10 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 
 ## Tecnologías Utilizadas
 
-- **PORDEFINIR** - Entorno de desarrollo local
-- **PORDEFINIR** - Servidor web
-- **PORDEFINIR** - Lenguaje de programación backend
+- **XAMPP** - Entorno de desarrollo local
+- **APACHE** - Servidor web
+- **PHP - TRANSACT-SQL** - Entorno de programación backend
+- **HTML-CSS-PHP-JavaScript** - Entorno de programación frontend
 - **SQLSERVER** - Base de datos
 - **SQL Server Management Studio** - Gestor de base de datos
 
@@ -59,3 +60,20 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 | Hermes Aguilera | |
 
 ## Estructura del Proyecto
+comercializadora_medicos/
+│
+├── index.php
+├── config/
+│   └── database.php
+├── modules/
+│   ├── clientes/
+│   ├── proveedores/
+│   ├── productos/
+│   ├── compras/
+│   ├── ventas/
+│   ├── inventario/
+│   └── reportes/
+├── css/
+│   └── styles.css
+└── js/
+    └── scripts.js
