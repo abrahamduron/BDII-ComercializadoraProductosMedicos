@@ -58,22 +58,3 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 | Miguel Hernandez | 20181033312 |
 | Abraham Durón | 20131001422 |
 | Hermes Aguilera | |
-
-## Estructura del Proyecto
-comercializadora_medicos/
-│
-├── index.php
-├── config/
-│   └── database.php
-├── modules/
-│   ├── clientes/
-│   ├── proveedores/
-│   ├── productos/
-│   ├── compras/
-│   ├── ventas/
-│   ├── inventario/
-│   └── reportes/
-├── css/
-│   └── styles.css
-└── js/
-    └── scripts.js
