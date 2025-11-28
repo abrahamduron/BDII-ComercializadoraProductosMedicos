@@ -2,8 +2,8 @@
 class Database {
     private $server = "localhost";
     private $database = "productos_medicos";
-    private $username = "tu_usuario";
-    private $password = "tu_password";
+    private $username = "admin_farmacia";
+    private $password = "#Comer@PROD_medicos#";
     public $conn;
 
     public function __construct() {
