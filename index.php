@@ -20,7 +20,7 @@ $stockBajo = $db->executeProcedure("sp_Producto_StockBajo");
 <body>
     <header class="header">
         <nav class="navbar">
-            <div class="logo">Comercializadora Médica</div>
+            <div class="logo">ComerciaMedic</div>
             <ul class="nav-menu">
                 <li><a href="index.php" class="active">Inicio</a></li>
                 <li><a href="modules/clientes/">Clientes</a></li>
