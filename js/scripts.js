@@ -1,4 +1,4 @@
-console.log("Proyecto Comercializadora Productos Médicos iniciado.");
+/*console.log("Proyecto Comercializadora Productos Médicos iniciado.");
 
 function inventario() {
     console.log("Módulo Inventario activado");
@@ -30,4 +30,4 @@ document.addEventListener("DOMContentLoaded", function() {
     if(ventasBtn) ventasBtn.addEventListener("click", ventas);
     if(bancosBtn) bancosBtn.addEventListener("click", bancos);
     if(consultasBtn) consultasBtn.addEventListener("click", consultas);
-});
+});*/

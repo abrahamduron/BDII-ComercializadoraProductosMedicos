@@ -37,9 +37,10 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 
 ## Tecnologías Utilizadas
 
-- **PORDEFINIR** - Entorno de desarrollo local
-- **PORDEFINIR** - Servidor web
-- **PORDEFINIR** - Lenguaje de programación backend
+- **XAMPP** - Entorno de desarrollo local
+- **APACHE** - Servidor web
+- **PHP - TRANSACT-SQL** - Entorno de programación backend
+- **HTML-CSS-PHP-JavaScript** - Entorno de programación frontend
 - **SQLSERVER** - Base de datos
 - **SQL Server Management Studio** - Gestor de base de datos
 
@@ -57,5 +58,3 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 | Miguel Hernandez | 20181033312 |
 | Abraham Durón | 20131001422 |
 | Hermes Aguilera | |
-
-## Estructura del Proyecto
