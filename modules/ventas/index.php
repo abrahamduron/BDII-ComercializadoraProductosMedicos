@@ -3,6 +3,8 @@ session_start();
 require_once '../../config/database.php';
 $db = new Database();
 
+$mensaje = '';
+
 // Obtener datos necesarios
 $clientes = $db->executeProcedure("sp_Cliente_Leer");
 $productos = $db->executeProcedure("sp_Producto_Leer");
@@ -66,7 +68,7 @@ if ($_POST && isset($_POST['crear_factura'])) {
     </header>
 
     <div class="container">
-        <?php if (isset($mensaje)): ?>
+        <?php if ($mensaje): ?>
             <div class="alert <?php echo strpos($mensaje, 'Error') !== false ? 'alert-error' : 'alert-success'; ?>">
                 <?php echo $mensaje; ?>
             </div>
@@ -77,19 +79,22 @@ if ($_POST && isset($_POST['crear_factura'])) {
                 <h1>Registro de Ventas</h1>
             </div>
 
-            <form method="POST">
+            <form method="POST" id="formVenta">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label>Número de Factura:</label>
-                        <input type="text" name="numero_factura" class="form-control" value="FAC-<?php echo date('Ymd-His'); ?>" required>
+                        <input type="text" name="numero_factura" class="form-control" 
+                               value="FAC-<?php echo date('Ymd-His'); ?>" required readonly>
                     </div>
                     <div class="form-group">
                         <label>Cliente:</label>
                         <select name="id_cliente" class="form-control" required>
                             <option value="">Seleccionar Cliente</option>
-                            <?php foreach ($clientes as $cliente): ?>
-                            <option value="<?php echo $cliente['id']; ?>"><?php echo $cliente['nombre']; ?></option>
-                            <?php endforeach; ?>
+                            <?php if (!empty($clientes) && !isset($clientes['error'])): ?>
+                                <?php foreach ($clientes as $cliente): ?>
+                                <option value="<?php echo $cliente['id']; ?>"><?php echo $cliente['nombre']; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -116,26 +121,30 @@ if ($_POST && isset($_POST['crear_factura'])) {
                         <div class="producto-item" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 0.5rem; align-items: end; margin-bottom: 1rem;">
                             <div class="form-group">
                                 <label>Producto:</label>
-                                <select name="productos[0][id_producto]" class="form-control" onchange="actualizarPrecio(this, 0)" required>
+                                <select name="productos[0][id_producto]" class="form-control producto-select" onchange="actualizarPrecio(this)" required>
                                     <option value="">Seleccionar Producto</option>
-                                    <?php foreach ($productos as $producto): ?>
-                                    <option value="<?php echo $producto['id_producto']; ?>" data-precio="<?php echo $producto['precio_venta']; ?>">
-                                        <?php echo $producto['nombre']; ?> (Stock: <?php echo $producto['cantidad']; ?>)
-                                    </option>
-                                    <?php endforeach; ?>
+                                    <?php if (!empty($productos) && !isset($productos['error'])): ?>
+                                        <?php foreach ($productos as $producto): ?>
+                                        <option value="<?php echo $producto['id_producto']; ?>" 
+                                                data-precio="<?php echo $producto['precio_venta']; ?>"
+                                                data-stock="<?php echo $producto['cantidad']; ?>">
+                                            <?php echo $producto['nombre']; ?> (Stock: <?php echo $producto['cantidad']; ?>)
+                                        </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Cantidad:</label>
-                                <input type="number" name="productos[0][cantidad]" class="form-control" min="1" value="1" required>
+                                <input type="number" name="productos[0][cantidad]" class="form-control cantidad" min="1" value="1" required oninput="calcularSubtotal(this)">
                             </div>
                             <div class="form-group">
                                 <label>Precio Unitario:</label>
-                                <input type="number" name="productos[0][precio]" class="form-control precio" step="0.01" required>
+                                <input type="number" name="productos[0][precio]" class="form-control precio" step="0.01" required oninput="calcularSubtotal(this)">
                             </div>
                             <div class="form-group">
                                 <label>Descuento:</label>
-                                <input type="number" name="productos[0][descuento]" class="form-control" step="0.01" value="0.00">
+                                <input type="number" name="productos[0][descuento]" class="form-control descuento" step="0.01" value="0.00" oninput="calcularSubtotal(this)">
                             </div>
                             <div class="form-group">
                                 <label>Subtotal:</label>
@@ -148,7 +157,9 @@ if ($_POST && isset($_POST['crear_factura'])) {
                     </div>
 
                     <div style="text-align: right; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd;">
-                        <h3>Total: L. <span id="total-venta">0.00</span></h3>
+                        <h3>Subtotal: L. <span id="subtotal-venta">0.00</span></h3>
+                        <h3>IVA (15%): L. <span id="iva-venta">0.00</span></h3>
+                        <h2>Total: L. <span id="total-venta">0.00</span></h2>
                     </div>
                 </div>
 
@@ -173,18 +184,22 @@ if ($_POST && isset($_POST['crear_factura'])) {
             nuevoProducto.innerHTML = `
                 <div class="form-group">
                     <label>Producto:</label>
-                    <select name="productos[${productoCount}][id_producto]" class="form-control" onchange="actualizarPrecio(this, ${productoCount})" required>
+                    <select name="productos[${productoCount}][id_producto]" class="form-control producto-select" onchange="actualizarPrecio(this)" required>
                         <option value="">Seleccionar Producto</option>
-                        <?php foreach ($productos as $producto): ?>
-                        <option value="<?php echo $producto['id_producto']; ?>" data-precio="<?php echo $producto['precio_venta']; ?>">
-                            <?php echo $producto['nombre']; ?> (Stock: <?php echo $producto['cantidad']; ?>)
-                        </option>
-                        <?php endforeach; ?>
+                        <?php if (!empty($productos) && !isset($productos['error'])): ?>
+                            <?php foreach ($productos as $producto): ?>
+                            <option value="<?php echo $producto['id_producto']; ?>" 
+                                    data-precio="<?php echo $producto['precio_venta']; ?>"
+                                    data-stock="<?php echo $producto['cantidad']; ?>">
+                                <?php echo $producto['nombre']; ?> (Stock: <?php echo $producto['cantidad']; ?>)
+                            </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Cantidad:</label>
-                    <input type="number" name="productos[${productoCount}][cantidad]" class="form-control" min="1" value="1" required oninput="calcularSubtotal(this)">
+                    <input type="number" name="productos[${productoCount}][cantidad]" class="form-control cantidad" min="1" value="1" required oninput="calcularSubtotal(this)">
                 </div>
                 <div class="form-group">
                     <label>Precio Unitario:</label>
@@ -192,7 +207,7 @@ if ($_POST && isset($_POST['crear_factura'])) {
                 </div>
                 <div class="form-group">
                     <label>Descuento:</label>
-                    <input type="number" name="productos[${productoCount}][descuento]" class="form-control" step="0.01" value="0.00" oninput="calcularSubtotal(this)">
+                    <input type="number" name="productos[${productoCount}][descuento]" class="form-control descuento" step="0.01" value="0.00" oninput="calcularSubtotal(this)">
                 </div>
                 <div class="form-group">
                     <label>Subtotal:</label>
@@ -214,18 +229,30 @@ if ($_POST && isset($_POST['crear_factura'])) {
             }
         }
 
-        function actualizarPrecio(select, index) {
+        function actualizarPrecio(select) {
             const precio = select.selectedOptions[0].getAttribute('data-precio');
             const precioInput = select.closest('.producto-item').querySelector('.precio');
-            precioInput.value = precio || '0.00';
+            const stock = select.selectedOptions[0].getAttribute('data-stock');
+            
+            if (precio) {
+                precioInput.value = precio;
+            }
+            
+            // Validar stock
+            const cantidadInput = select.closest('.producto-item').querySelector('.cantidad');
+            if (stock && parseInt(cantidadInput.value) > parseInt(stock)) {
+                alert('Stock insuficiente. Stock disponible: ' + stock);
+                cantidadInput.value = stock;
+            }
+            
             calcularSubtotal(select);
         }
 
         function calcularSubtotal(input) {
             const item = input.closest('.producto-item');
-            const cantidad = item.querySelector('input[name*="cantidad"]').value || 0;
-            const precio = item.querySelector('.precio').value || 0;
-            const descuento = item.querySelector('input[name*="descuento"]').value || 0;
+            const cantidad = parseFloat(item.querySelector('.cantidad').value) || 0;
+            const precio = parseFloat(item.querySelector('.precio').value) || 0;
+            const descuento = parseFloat(item.querySelector('.descuento').value) || 0;
             
             const subtotal = (cantidad * precio) - descuento;
             item.querySelector('.subtotal').value = subtotal.toFixed(2);
@@ -234,16 +261,48 @@ if ($_POST && isset($_POST['crear_factura'])) {
         }
 
         function calcularTotal() {
-            let total = 0;
+            let subtotal = 0;
             document.querySelectorAll('.subtotal').forEach(input => {
-                total += parseFloat(input.value) || 0;
+                subtotal += parseFloat(input.value) || 0;
             });
+            
+            const iva = subtotal * 0.15;
+            const total = subtotal + iva;
+            
+            document.getElementById('subtotal-venta').textContent = subtotal.toFixed(2);
+            document.getElementById('iva-venta').textContent = iva.toFixed(2);
             document.getElementById('total-venta').textContent = total.toFixed(2);
         }
 
         // Inicializar cálculos
         document.addEventListener('DOMContentLoaded', function() {
             calcularTotal();
+            
+            // Actualizar precios iniciales
+            document.querySelectorAll('.producto-select').forEach(select => {
+                if (select.value) {
+                    actualizarPrecio(select);
+                }
+            });
+        });
+
+        // Validar formulario antes de enviar
+        document.getElementById('formVenta').addEventListener('submit', function(e) {
+            let productosValidos = false;
+            
+            document.querySelectorAll('.producto-item').forEach(item => {
+                const idProducto = item.querySelector('.producto-select').value;
+                const cantidad = item.querySelector('.cantidad').value;
+                
+                if (idProducto && cantidad > 0) {
+                    productosValidos = true;
+                }
+            });
+            
+            if (!productosValidos) {
+                e.preventDefault();
+                alert('Debe agregar al menos un producto a la venta');
+            }
         });
     </script>
 </body>
