@@ -57,4 +57,4 @@ Automatizar los procesos manuales actuales basados en hojas electrónicas, propo
 | Cristian Rivera | 20191004778 |
 | Miguel Hernandez | 20181033312 |
 | Abraham Durón | 20131001422 |
-| Hermes Aguilera | |
+| Hermes Aguilera |20171005437|
